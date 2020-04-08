@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 
 public class LinkedList {
     private int count = 0;
+
     private class Node {
         private int value;
         private Node next;
