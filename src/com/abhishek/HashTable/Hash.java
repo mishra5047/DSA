@@ -6,38 +6,56 @@ public class Hash {
     LinkedList<Entry>[] list = new LinkedList[5];
 
     public void put(int key, String value){
-        int index = hashFunction(key);
 
-        if (list[index] == null)
-            list[index] = new LinkedList<>();
+        var entry = getEntry(key);
+        if (entry != null){
+            entry.value = value;
+            return;
+        }
 
-        var bucket = list[index];
-
-        for (var input : bucket){
-      if (input.key == key) {
-        input.value = value;
-
-        return;
-      }
-            }
-
-        bucket.addLast(new Entry(key, value));
+        getOrCreateBucket(key).add(new Entry(key, value));
     }
 
+    private LinkedList<Entry> getOrCreateBucket(int key){
+        var index = hashFunction(key);
+        var bucket = list[index];
+        if (bucket == null)
+            list[index] = new LinkedList<>();
+
+        return bucket;
+    }
     private int hashFunction(int key){
         return key % list.length;
     }
 
-    public String get(int key){
+  public String get(int key) {
+    var entry = getEntry(key);
+    var bucket = getBucket(key);
 
-        var index = hashFunction(key);
-        var bucket = list[index];
+    return (entry == null) ? null : entry.value;
 
+        }
+
+     public void remove(int key){
+
+        var entry = getEntry(key);
+        if (entry == null) throw new IllegalStateException();
+        getBucket(key).remove(entry);
+
+     }
+
+    private LinkedList<Entry> getBucket(int key) {
+        return list[hashFunction(key)];
+    }
+
+    private Entry getEntry(int k){
+        var bucket = getBucket(k);
         if (bucket != null){
-        for (var entry : bucket)
-            if (entry.key == key)
-                return entry.value;
+
+      for (var i : bucket) {
+        if (i.key == k) return i;
         }
-        return null;
-        }
+    }
+    return null;
+    }
 }

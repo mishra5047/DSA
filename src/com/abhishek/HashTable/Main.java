@@ -13,6 +13,5 @@ public class Main {
         hash.put(15, "lol");
         hash.put(4,"abc");
         hash.put(9,"c");
-        hash.put(15, "abccc");
-    System.out.println(hash.get(20));
+        hash.remove(10);
 }}
